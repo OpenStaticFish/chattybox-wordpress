@@ -1,14 +1,14 @@
 # ChattyBox AI Chatbot for WordPress
 
-Standalone WordPress plugin for adding the ChattyBox source-cited AI chatbot to public WordPress pages without editing theme files.
+Add the ChattyBox source-cited AI chatbot to public WordPress pages without editing theme files.
 
-Connect your WordPress site to a ChattyBox project and add source-cited AI support without editing theme files.
+Connect your WordPress site to a ChattyBox project, then let ChattyBox answer from your public content with links back to the source pages.
 
 ## Features
 
 - Native Settings API screen under **Settings > ChattyBox**.
 - Loads the maintained `widget.js` only on public frontend requests.
-- Adds the public widget API key and API URL as escaped script attributes.
+- Adds the public widget key and managed production endpoint to the widget.
 - Supports an optional widget language override.
 - Avoids admin, feed, REST, and AJAX requests.
 - Keeps settings through deactivation and removes them on uninstall.
@@ -20,8 +20,8 @@ Connect your WordPress site to a ChattyBox project and add source-cited AI suppo
 2. Activate **ChattyBox AI Chatbot** from the Plugins screen.
 3. Open **Settings > ChattyBox**.
 4. Create a ChattyBox project, crawl the public WordPress URL, and test representative questions.
-5. Copy the **public widget API key** and **Widget API URL** from the project Embed tab.
-6. Paste both values into the plugin settings and enable the chatbot.
+5. Copy the **public widget API key** from the project Embed tab.
+6. Paste the key into the plugin settings and enable the chatbot.
 
 The API key is designed for frontend use. Never paste a management credential into the plugin settings.
 
@@ -30,10 +30,10 @@ The API key is designed for frontend use. Never paste a management credential in
 The production defaults are:
 
 - Widget script: `https://chattybox.ai/widget.js`
-- Widget API URL: the project-specific URL shown in the ChattyBox dashboard
+- API endpoint: configured automatically by the plugin
 - Locale: automatic detection from the page language and visitor browser
 
-The plugin stores only its connection settings in the WordPress options table. The widget sends visitor questions and the current public page context to ChattyBox so it can answer from the project content and show citations.
+The plugin stores only its public widget key and display settings in the WordPress options table. The widget sends visitor questions and the current public page context to ChattyBox so it can answer from the project content and show citations.
 
 Themes and plugins can disable loading for a request with the `chattybox_load_widget` filter:
 

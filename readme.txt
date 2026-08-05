@@ -4,7 +4,7 @@ Tags: ai chatbot, chatbot, customer support, documentation, knowledge base
 Requires at least: 5.8
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,8 +30,8 @@ ChattyBox crawls the public content you choose, answers questions from indexed s
 2. Activate the plugin.
 3. Go to Settings > ChattyBox.
 4. Create a ChattyBox project and crawl your public WordPress URL.
-5. Copy the public widget API key and Widget API URL from the project Embed tab.
-6. Paste both values into the plugin settings, save, and enable the chatbot.
+5. Copy the public widget API key from the project Embed tab.
+6. Paste the key into the plugin settings, save, and enable the chatbot.
 
 == Frequently Asked Questions ==
 
@@ -53,9 +53,13 @@ Yes. Use the `chattybox_load_widget` filter in your theme or another plugin to r
 
 = What data does the plugin store? =
 
-The plugin stores its public widget API key, Widget API URL, script URL, enabled state, and optional locale in the WordPress options table. Visitor questions are sent by the widget to ChattyBox and are not stored by this plugin.
+The plugin stores its public widget API key, script URL, enabled state, and optional locale in the WordPress options table. Visitor questions are sent by the widget to ChattyBox and are not stored by this plugin.
 
 == Changelog ==
+
+= 0.2.0 =
+* Configure the production widget API endpoint automatically.
+* Remove the API URL from customer settings.
 
 = 0.1.0 =
 * Initial release.

@@ -18,6 +18,7 @@ final class ChattyBox_Plugin {
 	const PAGE_SLUG = 'chattybox';
 	const SCRIPT_HANDLE = 'chattybox-widget';
 	const DEFAULT_SCRIPT_URL = 'https://chattybox.ai/widget.js';
+	const WIDGET_API_URL = 'https://adorable-woodpecker-629.convex.site/chat';
 
 	/**
 	 * The singleton instance.
@@ -96,7 +97,6 @@ final class ChattyBox_Plugin {
 		return array(
 			'enabled'    => false,
 			'api_key'    => '',
-			'api_url'    => '',
 			'script_url' => self::DEFAULT_SCRIPT_URL,
 			'locale'     => '',
 		);
@@ -156,14 +156,6 @@ final class ChattyBox_Plugin {
 		);
 
 		add_settings_field(
-			'chattybox_api_url',
-			__( 'Widget API URL', 'chattybox' ),
-			array( $this, 'render_api_url_field' ),
-			self::PAGE_SLUG,
-			'chattybox_connection'
-		);
-
-		add_settings_field(
 			'chattybox_script_url',
 			__( 'Widget script URL', 'chattybox' ),
 			array( $this, 'render_script_url_field' ),
@@ -209,13 +201,6 @@ final class ChattyBox_Plugin {
 		$clean['enabled'] = ! empty( $input['enabled'] );
 		$clean['api_key'] = $this->sanitize_api_key( $input['api_key'] ?? '' );
 
-		$clean['api_url'] = $this->sanitize_url_setting(
-			$input['api_url'] ?? '',
-			$current['api_url'],
-			__( 'The widget API URL must use HTTPS. HTTP is only allowed for localhost development URLs.', 'chattybox' ),
-			'api_url'
-		);
-
 		$script_url = trim( wp_unslash( (string) ( $input['script_url'] ?? self::DEFAULT_SCRIPT_URL ) ) );
 		if ( '' === $script_url ) {
 			$script_url = self::DEFAULT_SCRIPT_URL;
@@ -230,11 +215,11 @@ final class ChattyBox_Plugin {
 
 		$clean['locale'] = $this->sanitize_locale( $input['locale'] ?? '', $current['locale'] );
 
-		if ( $clean['enabled'] && ( '' === $clean['api_key'] || '' === $clean['api_url'] ) ) {
+		if ( $clean['enabled'] && '' === $clean['api_key'] ) {
 			add_settings_error(
 				self::OPTION_NAME,
 				'missing_connection',
-				__( 'Add the public widget API key and Widget API URL before enabling ChattyBox.', 'chattybox' ),
+				__( 'Add the public widget API key before enabling ChattyBox.', 'chattybox' ),
 				'error'
 			);
 			$clean['enabled'] = false;
@@ -251,7 +236,7 @@ final class ChattyBox_Plugin {
 	public function enqueue_widget() {
 		$settings = self::get_settings();
 
-		if ( ! $settings['enabled'] || '' === $settings['api_key'] || '' === $settings['api_url'] ) {
+		if ( ! $settings['enabled'] || '' === $settings['api_key'] ) {
 			return;
 		}
 
@@ -294,7 +279,7 @@ final class ChattyBox_Plugin {
 		$settings = self::get_settings();
 		$attributes = array(
 			'data-api-key'          => $settings['api_key'],
-			'data-api-url'          => $settings['api_url'],
+			'data-api-url'          => self::WIDGET_API_URL,
 			'data-chattybox-widget' => 'true',
 		);
 
@@ -341,7 +326,7 @@ final class ChattyBox_Plugin {
 		}
 
 		$settings      = self::get_settings();
-		$is_configured = '' !== $settings['api_key'] && '' !== $settings['api_url'];
+		$is_configured = '' !== $settings['api_key'];
 		?>
 		<div class="wrap">
 			<h1><?php echo esc_html__( 'ChattyBox AI Chatbot', 'chattybox' ); ?></h1>
@@ -362,7 +347,7 @@ final class ChattyBox_Plugin {
 						<strong><?php echo esc_html__( 'One-time setup:', 'chattybox' ); ?></strong>
 						<?php
 						esc_html_e(
-							"Create a ChattyBox project, crawl this site's public URL, and copy the public widget API key and Widget API URL from the Embed tab.",
+							"Create a ChattyBox project, crawl this site's public URL, and copy the public widget API key from the Embed tab.",
 							'chattybox'
 						);
 						?>
@@ -408,7 +393,7 @@ final class ChattyBox_Plugin {
 	public function render_connection_section() {
 		printf(
 			'<p>%s</p>',
-			esc_html__( 'The plugin adds the maintained ChattyBox widget to public frontend pages. It does not copy WordPress content into your site database.', 'chattybox' )
+			esc_html__( 'The plugin adds the maintained ChattyBox widget to public frontend pages. The production API endpoint is configured automatically, and WordPress content is not copied into your site database.', 'chattybox' )
 		);
 	}
 
@@ -448,22 +433,6 @@ final class ChattyBox_Plugin {
 			$settings['api_key'],
 			__( 'Paste the public widget key from your ChattyBox project Embed tab.', 'chattybox' ),
 			'cb_pk_...'
-		);
-	}
-
-	/**
-	 * Render the widget API URL field.
-	 *
-	 * @return void
-	 */
-	public function render_api_url_field() {
-		$settings = self::get_settings();
-		$this->render_text_input(
-			'api_url',
-			$settings['api_url'],
-			__( 'Use the exact Widget API URL shown in the ChattyBox dashboard. Production URLs use HTTPS.', 'chattybox' ),
-			'https://...convex.site/chat',
-			'url'
 		);
 	}
 
@@ -531,13 +500,13 @@ final class ChattyBox_Plugin {
 		}
 
 		$settings = self::get_settings();
-		if ( ! $settings['enabled'] || ( '' !== $settings['api_key'] && '' !== $settings['api_url'] ) ) {
+		if ( ! $settings['enabled'] || '' !== $settings['api_key'] ) {
 			return;
 		}
 
 		printf(
 			'<div class="notice notice-warning"><p>%s <a href="%s">%s</a></p></div>',
-			esc_html__( 'ChattyBox is enabled but still needs a public widget API key and Widget API URL.', 'chattybox' ),
+			esc_html__( 'ChattyBox is enabled but still needs a public widget API key.', 'chattybox' ),
 			esc_url( $this->settings_url() ),
 			esc_html__( 'Open settings', 'chattybox' )
 		);
@@ -564,7 +533,7 @@ final class ChattyBox_Plugin {
 	}
 
 	/**
-	 * Sanitize a URL setting and preserve the last valid value on failure.
+	 * Sanitize the optional widget script URL and preserve the last valid value.
 	 *
 	 * @param mixed  $value         Submitted URL.
 	 * @param string $fallback      Last valid URL.
