@@ -2,7 +2,7 @@
 
 Standalone WordPress plugin for adding the ChattyBox source-cited AI chatbot to public WordPress pages without editing theme files.
 
-This directory is intentionally its own Git repository and is consumed by the parent ChattyBox workspace as the `.repos/chattybox-wordpress` Git submodule.
+Connect your WordPress site to a ChattyBox project and add source-cited AI support without editing theme files.
 
 ## Features
 
