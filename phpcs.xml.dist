@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<ruleset name="ChattyBox WordPress Plugin">
+	<description>WordPress Coding Standards for the ChattyBox plugin.</description>
+	<rule ref="WordPress" />
+	<file>chattybox.php</file>
+	<file>includes</file>
+	<file>uninstall.php</file>
+	<exclude-pattern>vendor</exclude-pattern>
+</ruleset>

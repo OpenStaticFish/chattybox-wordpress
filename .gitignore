@@ -1,0 +1,20 @@
+# WordPress development files
+node_modules/
+vendor/
+.phpunit.result.cache
+phpunit.xml
+
+# Build and release artifacts
+*.zip
+build/
+dist/
+
+# Local environment and editor files
+.env
+.env.*
+.DS_Store
+.idea/
+.vscode/
+
+# WordPress.org packaging metadata
+*.pot
