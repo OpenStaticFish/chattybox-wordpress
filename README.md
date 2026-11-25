@@ -2,7 +2,7 @@
 
 Add the ChattyBox source-cited AI chatbot to public WordPress pages without editing theme files.
 
-Connect your WordPress site to a ChattyBox project, then let ChattyBox answer from your public content with links back to the source pages.
+**[WordPress setup guide](https://chattybox.ai/docs/wordpress-chatbot-plugin/)** — install the plugin from the GitHub ZIP, connect your public widget key, and check that an answer links back to your WordPress content.
 
 ## Features
 
