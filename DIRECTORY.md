@@ -1,0 +1,17 @@
+# WordPress.org review package
+
+The public [setup guide](https://chattybox.ai/docs/wordpress-chatbot-plugin/) is the source of installation instructions. A candidate build or a merge here does not submit or release the plugin.
+
+## Rebuild a candidate
+
+Check out the reviewed commit and run `sh scripts/package.sh`. It prints the SHA-256 of `dist/chattybox.zip`. The ZIP contains one `chattybox/` directory with the plugin bootstrap, integration class, uninstall hook, license and `readme.txt`. No build is needed on the WordPress site. **Directory candidate** CI runs WordPress Plugin Check on the unpacked ZIP and retains the candidate as a 30-day artifact. For an expired artifact, rebuild at the same SHA. Do not upload GitHub's outer artifact wrapper.
+
+Use `.wordpress-org/screenshot-1.png` and `screenshot-2.png` in the assigned SVN repository's top-level `assets/`, **outside** `trunk/` and `tags/`. The numbering matches the captions in `readme.txt`. Screenshot 1 is an unconfigured demo. Screenshot 2 is a signed-out WordPress demo using the hosted loader and an isolated ChattyBox project which indexed [Sticky Posts (Classic Editor)](https://wordpress.org/documentation/article/sticky-posts-classic-editor/). Only the demo site redirected the widget API to the preview; no response or citation was mocked.
+
+## Before upload (authorized maintainer)
+
+1. Sign in to [Add your plugin](https://wordpress.org/plugins/developers/add/) with the authorized WordPress.org account. Check its existing submissions and review correspondence first. Update an existing review rather than creating a second one. Public directory search cannot show a private submission.
+2. Confirm the monitored contact and permission to represent ChattyBox and license the code and screenshots. Add verified, case-sensitive WordPress.org usernames to `Contributors:` if appropriate. A GitHub identity is not a WordPress.org identity. Confirm the proposed slug `chattybox` (matches the text domain); if the form proposes a different slug, request or reconcile it before approval.
+3. Review [guidelines 6–8, 10 and 17](https://developer.wordpress.org/plugins/wordpress-org/detailed-plugin-guidelines/) and the **External services** section of `readme.txt`. The plugin's default-off enable switch permits the service connection. The plugin adds no theme/site credit. The remote service draws a linked footer inside its chat window, required on Free and removable on paid plans. Guideline 10 requires plugin-added credits to be optional and off by default, and distinguishes service-rendered branding. Ask the product owner to confirm this presentation for submission. If the reviewer requires a default-off credit control even for the hosted output, return to the product owner before proceeding. A notice or a required checkbox is not an independent opt-in.
+4. Rebuild after final metadata edits. Review the ZIP, rerun Plugin Check, and record source SHA, ZIP SHA-256, WordPress/PHP versions and any findings. Submit the exact ZIP only after the owner can make the required declarations.
+5. Record the upload receipt, then queue/reviewer acknowledgement, then approval notice separately (date and non-sensitive reference for each). On approval, follow the assigned SVN instructions and publish the reviewed version and assets. Verify the actual listing signed out and install from **Plugins → Add New** on a clean site before changing the public guide.

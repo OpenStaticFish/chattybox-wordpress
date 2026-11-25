@@ -85,7 +85,6 @@ final class ChattyBox_Plugin {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_widget' ) );
 		add_filter( 'script_loader_tag', array( $this, 'add_widget_attributes' ), 10, 3 );
 		add_filter( 'plugin_action_links_' . plugin_basename( CHATTYBOX_FILE ), array( $this, 'add_action_links' ) );
-		add_action( 'init', array( $this, 'load_textdomain' ) );
 	}
 
 	/**
@@ -347,11 +346,11 @@ final class ChattyBox_Plugin {
 						<strong><?php echo esc_html__( 'One-time setup:', 'chattybox' ); ?></strong>
 						<?php
 						esc_html_e(
-							"Create a ChattyBox project, crawl this site's public URL, and copy the public widget API key from the Embed tab.",
+							"Create a ChattyBox project, index this site's public content, and copy the public widget key from Install.",
 							'chattybox'
 						);
 						?>
-						<a href="https://chattybox.ai/docs/installation/" target="_blank" rel="noopener noreferrer">
+						<a href="https://chattybox.ai/docs/wordpress-chatbot-plugin/" target="_blank" rel="noopener noreferrer">
 							<?php echo esc_html__( 'Read the installation guide', 'chattybox' ); ?>
 						</a>
 					</p>
@@ -393,7 +392,7 @@ final class ChattyBox_Plugin {
 	public function render_connection_section() {
 		printf(
 			'<p>%s</p>',
-			esc_html__( 'The plugin adds the maintained ChattyBox widget to public frontend pages. The production API endpoint is configured automatically, and WordPress content is not copied into your site database.', 'chattybox' )
+			esc_html__( 'ChattyBox is a hosted service that answers questions using content you index in your ChattyBox account. This plugin does not upload your WordPress database or sync posts.', 'chattybox' )
 		);
 	}
 
@@ -413,10 +412,15 @@ final class ChattyBox_Plugin {
 				value="1"
 				<?php checked( $settings['enabled'], true ); ?>
 			/>
-			<?php echo esc_html__( 'Load ChattyBox on public pages and posts', 'chattybox' ); ?>
+			<?php echo esc_html__( 'Load the hosted ChattyBox widget for visitors', 'chattybox' ); ?>
 		</label>
 		<p class="description">
-			<?php echo esc_html__( 'The widget is not loaded in wp-admin, feeds, REST requests, or AJAX requests.', 'chattybox' ); ?>
+			<?php esc_html_e( 'When enabled with a key, visitors’ browsers contact the script host and ChattyBox for configuration before a question is asked. Questions, conversation identifiers, language and page context are sent to ChattyBox when visitors chat. Exclude sensitive pages or gate loading if visitor consent is required.', 'chattybox' ); ?>
+			<a href="https://chattybox.ai/privacy/"><?php esc_html_e( 'Privacy policy', 'chattybox' ); ?></a> ·
+			<a href="https://chattybox.ai/terms/"><?php esc_html_e( 'Terms of service', 'chattybox' ); ?></a>
+		</p>
+		<p class="description">
+			<?php esc_html_e( 'The hosted widget displays a linked “Powered by ChattyBox” footer on Free. Starter, Pro and Business can turn it off in ChattyBox under Customize → ChattyBox branding.', 'chattybox' ); ?>
 		</p>
 		<?php
 	}
@@ -431,7 +435,7 @@ final class ChattyBox_Plugin {
 		$this->render_text_input(
 			'api_key',
 			$settings['api_key'],
-			__( 'Paste the public widget key from your ChattyBox project Embed tab.', 'chattybox' ),
+			__( 'Paste the public widget key from Install in your ChattyBox project.', 'chattybox' ),
 			'cb_pk_...'
 		);
 	}
@@ -510,15 +514,6 @@ final class ChattyBox_Plugin {
 			esc_url( $this->settings_url() ),
 			esc_html__( 'Open settings', 'chattybox' )
 		);
-	}
-
-	/**
-	 * Load translations from the plugin languages directory.
-	 *
-	 * @return void
-	 */
-	public function load_textdomain() {
-		load_plugin_textdomain( 'chattybox', false, dirname( plugin_basename( CHATTYBOX_FILE ) ) . '/languages' );
 	}
 
 	/**

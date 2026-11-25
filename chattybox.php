@@ -3,7 +3,7 @@
  * Plugin Name: ChattyBox AI Chatbot
  * Plugin URI: https://chattybox.ai/wordpress-chatbot-plugin/
  * Description: Add the ChattyBox source-cited AI chatbot to your public WordPress pages without editing theme files.
- * Version: 0.2.0
+ * Version: 0.2.1
  * Requires at least: 5.8
  * Requires PHP: 7.4
  * Author: ChattyBox
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CHATTYBOX_VERSION', '0.2.0' );
+define( 'CHATTYBOX_VERSION', '0.2.1' );
 define( 'CHATTYBOX_FILE', __FILE__ );
 define( 'CHATTYBOX_DIR', plugin_dir_path( __FILE__ ) );
 define( 'CHATTYBOX_URL', plugin_dir_url( __FILE__ ) );
